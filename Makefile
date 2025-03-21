@@ -4,11 +4,11 @@ CFLAGS = -Wall -Wextra -Werror
 SERVER = server
 CLIENT = client
 
-LIBFT_DIR = libft
+LIBFT_DIR = includes/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-SRCS_SERVER = server.c
-SRCS_CLIENT = client.c
+SRCS_SERVER = src/server.c
+SRCS_CLIENT = src/client.c
 
 OBJS_SERVER = $(SRCS_SERVER:.c=.o)
 OBJS_CLIENT = $(SRCS_CLIENT:.c=.o)
