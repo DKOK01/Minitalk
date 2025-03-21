@@ -6,23 +6,40 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 16:52:23 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/03/20 20:45:31 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/03/21 21:44:52 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
+unsigned char	g_char = 0;
+
 void	signal_handler(int signum, siginfo_t *info, void *context)
 {
-	(void)context;
-	if (signum == SIGUSR1)
-		ft_printf("Received SIGUSR1 from PID %d\n", info->si_pid);
-	else if (signum == SIGUSR2)
-		ft_printf("Received SIGUSR2 from PID %d\n", info->si_pid);
+	static int	bit_count = 0;
+	static int	pid = 0;
 
+	(void)context;
+	if (pid != info->si_pid)
+	{
+		pid = info->si_pid;
+		bit_count = 0;
+		g_char = 0;
+	}
+	g_char = (g_char << 1) | (signum == SIGUSR2);
+	bit_count++;
+	if (bit_count == 8)
+	{
+		if (g_char == '\0')
+			write(1, "\n", 1);
+		else
+			write(1, &g_char, 1);
+		g_char = 0;
+		bit_count = 0;
+	}
 }
 
-int main(void)
+int	main(void)
 {
 	struct sigaction	sa;
 

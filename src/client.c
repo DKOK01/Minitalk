@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:09:08 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/03/21 01:07:16 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/03/21 21:44:03 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	send_char(pid_t pid, char c)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
-		usleep(100);
+		usleep(400);
 		bit--;
 	}
 }
@@ -57,7 +57,7 @@ void	send_message(pid_t pid, char *message)
 	send_char(pid, '\0');
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	pid_t	pid;
 
