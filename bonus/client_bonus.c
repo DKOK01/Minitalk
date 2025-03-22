@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:09:08 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/03/22 17:00:08 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/03/22 20:29:54 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ bool	g_state;
 
 void	signal_handler(int signum)
 {
-	g_state = true;
+	if (signum == SIGUSR1)
+		g_state = true;
+	else if (signum == SIGUSR2)
+		write(1, "Message sent\n", 13);
 	(void)signum;
 }
 
@@ -95,6 +98,7 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	signal(SIGUSR1, signal_handler);
+	signal(SIGUSR2, signal_handler);
 	send_message(pid, argv[2]);
 	return (0);
 }
