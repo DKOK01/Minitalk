@@ -6,11 +6,19 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 18:09:08 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/03/21 21:44:03 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/03/22 01:52:08 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+bool	g_state;
+
+void	signal_handler(int signum)
+{
+	g_state = true;
+	(void)signum;
+}
 
 int	is_valid_pid(char *pid)
 {
@@ -35,12 +43,21 @@ void	send_char(pid_t pid, char c)
 	bit = 7;
 	while (bit >= 0)
 	{
+		g_state = false;
 		if ((c >> bit) & 1)
-			kill(pid, SIGUSR2);
+		{
+			if (kill(pid, SIGUSR2) == -1)
+				exit(1);
+		}
 		else
-			kill(pid, SIGUSR1);
-		usleep(400);
+		{
+			if (kill(pid, SIGUSR1) == -1)
+				exit(1);
+		}
 		bit--;
+		while (!g_state)
+			;
+		usleep(50);
 	}
 }
 
@@ -77,6 +94,7 @@ int	main(int argc, char **argv)
 		ft_printf("Invalid PID\n");
 		return (0);
 	}
+	signal(SIGUSR1, signal_handler);
 	send_message(pid, argv[2]);
 	return (0);
 }

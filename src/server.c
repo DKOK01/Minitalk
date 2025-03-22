@@ -6,7 +6,7 @@
 /*   By: aysadeq <aysadeq@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 16:52:23 by aysadeq           #+#    #+#             */
-/*   Updated: 2025/03/21 21:44:52 by aysadeq          ###   ########.fr       */
+/*   Updated: 2025/03/22 00:15:27 by aysadeq          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	signal_handler(int signum, siginfo_t *info, void *context)
 	}
 	g_char = (g_char << 1) | (signum == SIGUSR2);
 	bit_count++;
+	kill(pid, SIGUSR1);
 	if (bit_count == 8)
 	{
 		if (g_char == '\0')
