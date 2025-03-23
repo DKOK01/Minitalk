@@ -97,4 +97,5 @@ Hello, world!
 ## 📜 Authors
 
 - Developed as part of the 42 School curriculum.
+- Successfully validated
 
